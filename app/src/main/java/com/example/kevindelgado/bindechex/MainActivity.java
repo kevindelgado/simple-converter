@@ -5,39 +5,29 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Intent;
+//import android.content.Intent;
 import android.widget.EditText;
+import android.view.View.OnFocusChangeListener;
 
 
 public class MainActivity extends ActionBarActivity {
 
-
-    public void sendMessage(View view){
-        EditText decEditText = (EditText) findViewById(R.id.dec_message);
-        String decMessage = decEditText.getText().toString();
-        int decimal = Integer.parseInt(decMessage);
-        String binString = Integer.toBinaryString(decimal);
-        String hexString = Integer.toHexString(decimal);
-        EditText binEditText = (EditText) findViewById(R.id.bin_message);
-        binEditText.setText(binString);
-        EditText hexEditText = (EditText) findViewById(R.id.hex_message);
-        hexEditText.setText(hexString);
-    }
-
-    public void clearMessage(View view){
-        EditText et1 = (EditText) findViewById(R.id.hex_message);
-        et1.setText("");
-        EditText et2 = (EditText) findViewById(R.id.dec_message);
-        et2.setText("");
-        EditText et3 = (EditText) findViewById(R.id.bin_message);
-        et3.setText("");
+    int curFocus = 0;
 
 
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        EditText decEditText = (EditText) findViewById(R.id.dec_message);
+        decEditText.setOnFocusChangeListener(myEditTextFocus);
+
+        EditText binEditText = (EditText) findViewById(R.id.bin_message);
+        binEditText.setOnFocusChangeListener(myEditTextFocus);
+
+        EditText hexEditText = (EditText) findViewById(R.id.hex_message);
+        hexEditText.setOnFocusChangeListener(myEditTextFocus);
     }
 
 
@@ -61,5 +51,118 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private OnFocusChangeListener myEditTextFocus = new OnFocusChangeListener(){
+        public void onFocusChange(View view, boolean gainFocus){
+            if (gainFocus){
+                int newFocus = getNewFocus(view);
+                curFocus = newFocus;
+            }
+        };
+        public int getNewFocus(View view){
+            int id = view.getId();
+
+            switch (id){
+                case R.id.bin_message:
+                    return 0;
+                case R.id.dec_message:
+                    return 1;
+                case R.id.hex_message:
+                    return 2;
+                default:
+                    return -1;
+            }
+        };
+    };
+
+    public void sendMessage(View view){
+
+        if(curFocus == 0){
+            convertFromBinary(view);
+        }
+        else if(curFocus == 1){
+            convertFromDecimal(view);
+        }
+        else{
+            convertFromHex(view);
+        }
+     /**
+        switch (curFocus){
+            case 0:
+                convertFromBinary(view);
+            case 1:
+                convertFromDecimal(view);
+            case 2:
+                convertFromHex(view);
+            default:
+                clearMessage(view);
+        }
+      **/
+    }
+
+    public void convertFromBinary(View view){
+        EditText binEditText = (EditText) findViewById(R.id.bin_message);
+        String binMessage = binEditText.getText().toString();
+        int binary = Integer.parseInt(binMessage, 2);
+        String decString = Integer.toString(binary);
+        String hexString = Integer.toHexString(binary);
+        EditText decEditText = (EditText) findViewById(R.id.dec_message);
+        decEditText.setText(decString);
+        EditText hexEditText = (EditText) findViewById(R.id.hex_message);
+        hexEditText.setText(hexString);
+        /**
+        EditText et1 = (EditText) findViewById(R.id.hex_message);
+        et1.setText("bin");
+        EditText et2 = (EditText) findViewById(R.id.dec_message);
+        et2.setText("bin");
+        EditText et3 = (EditText) findViewById(R.id.bin_message);
+        et3.setText("bin");
+         **/
+    }
+
+    public void convertFromDecimal(View view){
+
+         EditText decEditText = (EditText) findViewById(R.id.dec_message);
+         String decMessage = decEditText.getText().toString();
+         int decimal = Integer.parseInt(decMessage);
+         String binString = Integer.toBinaryString(decimal);
+         String hexString = Integer.toHexString(decimal);
+         EditText binEditText = (EditText) findViewById(R.id.bin_message);
+         binEditText.setText(binString);
+         EditText hexEditText = (EditText) findViewById(R.id.hex_message);
+         hexEditText.setText(hexString);
+
+    }
+
+    public void convertFromHex(View view){
+        EditText hexEditText = (EditText) findViewById(R.id.hex_message);
+        String hexMessage = hexEditText.getText().toString();
+        int hexadecimal = Integer.parseInt(hexMessage, 16);
+        String binString = Integer.toBinaryString(hexadecimal);
+        String decString = Integer.toString(hexadecimal);
+        EditText binEditText = (EditText) findViewById(R.id.bin_message);
+        binEditText.setText(binString);
+        EditText decEditText = (EditText) findViewById(R.id.dec_message);
+        decEditText.setText(decString);
+        /**
+        EditText et1 = (EditText) findViewById(R.id.hex_message);
+        et1.setText("hex");
+        EditText et2 = (EditText) findViewById(R.id.dec_message);
+        et2.setText("hex");
+        EditText et3 = (EditText) findViewById(R.id.bin_message);
+        et3.setText("hex");
+         **/
+    }
+
+    public void clearMessage(View view){
+        EditText et1 = (EditText) findViewById(R.id.hex_message);
+        et1.setText("");
+        EditText et2 = (EditText) findViewById(R.id.dec_message);
+        et2.setText("");
+        EditText et3 = (EditText) findViewById(R.id.bin_message);
+        et3.setText("");
+
+
     }
 }
