@@ -104,9 +104,9 @@ public class MainActivity extends ActionBarActivity {
     public void convertFromBinary(View view){
         EditText binEditText = (EditText) findViewById(R.id.bin_message);
         String binMessage = binEditText.getText().toString();
-        int binary = Integer.parseInt(binMessage, 2);
-        String decString = Integer.toString(binary);
-        String hexString = Integer.toHexString(binary);
+        long binary = Long.parseLong(binMessage, 2);
+        String decString = Long.toString(binary);
+        String hexString = Long.toHexString(binary);
         EditText decEditText = (EditText) findViewById(R.id.dec_message);
         decEditText.setText(decString);
         EditText hexEditText = (EditText) findViewById(R.id.hex_message);
@@ -125,9 +125,9 @@ public class MainActivity extends ActionBarActivity {
 
          EditText decEditText = (EditText) findViewById(R.id.dec_message);
          String decMessage = decEditText.getText().toString();
-         int decimal = Integer.parseInt(decMessage);
-         String binString = Integer.toBinaryString(decimal);
-         String hexString = Integer.toHexString(decimal);
+         long decimal = Long.parseLong(decMessage);
+         String binString = Long.toBinaryString(decimal);
+         String hexString = Long.toHexString(decimal);
          EditText binEditText = (EditText) findViewById(R.id.bin_message);
          binEditText.setText(binString);
          EditText hexEditText = (EditText) findViewById(R.id.hex_message);
@@ -138,9 +138,9 @@ public class MainActivity extends ActionBarActivity {
     public void convertFromHex(View view){
         EditText hexEditText = (EditText) findViewById(R.id.hex_message);
         String hexMessage = hexEditText.getText().toString();
-        int hexadecimal = Integer.parseInt(hexMessage, 16);
-        String binString = Integer.toBinaryString(hexadecimal);
-        String decString = Integer.toString(hexadecimal);
+        long hexadecimal = Long.parseLong(hexMessage, 16);
+        String binString = Long.toBinaryString(hexadecimal);
+        String decString = Long.toString(hexadecimal);
         EditText binEditText = (EditText) findViewById(R.id.bin_message);
         binEditText.setText(binString);
         EditText decEditText = (EditText) findViewById(R.id.dec_message);
