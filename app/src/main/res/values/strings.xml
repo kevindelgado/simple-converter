@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bin Dec Hex</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="bin_message">Enter a binary number</string>
+    <string name="dec_message">Enter a decimal number</string>
+    <string name="hex_message">Enter a hexadecimal number</string>
+
+</resources>
