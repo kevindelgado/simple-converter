@@ -1,5 +1,6 @@
 package com.example.kevindelgado.bindechex;
 
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,8 +12,9 @@ import android.view.View.OnFocusChangeListener;
 
 
 public class MainActivity extends ActionBarActivity {
+    CustomKeyboard myHexKeyboard;
+    CustomKeyboard myBinKeyboard;
 
-    int curFocus = 0;
 
 
     @Override
@@ -20,14 +22,26 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText decEditText = (EditText) findViewById(R.id.dec_message);
-        decEditText.setOnFocusChangeListener(myEditTextFocus);
 
-        EditText binEditText = (EditText) findViewById(R.id.bin_message);
-        binEditText.setOnFocusChangeListener(myEditTextFocus);
+        myBinKeyboard = new CustomKeyboard(this, R.id.keyboardview, R.xml.binkbd );
+        myHexKeyboard = new CustomKeyboard(this, R.id.keyboardview, R.xml.hexkbd );
 
-        EditText hexEditText = (EditText) findViewById(R.id.hex_message);
-        hexEditText.setOnFocusChangeListener(myEditTextFocus);
+
+        myHexKeyboard.registerEditText(R.id.hex_message);
+        myBinKeyboard.registerEditText(R.id.bin_message);
+
+    }
+    public void onBackPressed(){
+         //NOTE Trap the back key: when CustomKeyboard is still visible hide it, only when it is invisible, finish activity
+        if( myHexKeyboard.isCustomKeyboardVisible() ){
+            myHexKeyboard.hideCustomKeyboard();
+        }
+        //else if( myBinKeyboard.isCustomKeyboardVisible() ){
+        //    myBinKeyboard.hideCustomKeyboard();
+        //}
+        else{
+            this.finish();
+        }
     }
 
 
@@ -53,52 +67,19 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private OnFocusChangeListener myEditTextFocus = new OnFocusChangeListener(){
-        public void onFocusChange(View view, boolean gainFocus){
-            if (gainFocus){
-                int newFocus = getNewFocus(view);
-                curFocus = newFocus;
-            }
-        };
-        public int getNewFocus(View view){
-            int id = view.getId();
-
-            switch (id){
-                case R.id.bin_message:
-                    return 0;
-                case R.id.dec_message:
-                    return 1;
-                case R.id.hex_message:
-                    return 2;
-                default:
-                    return -1;
-            }
-        };
-    };
-
     public void sendMessage(View view){
 
-        if(curFocus == 0){
+
+        int currentFocusId = getWindow().getCurrentFocus().getId();
+        if(currentFocusId == 2131230783){               //2131230783
             convertFromBinary(view);
         }
-        else if(curFocus == 1){
+        else if(currentFocusId == 2131230784){          //2131230784
             convertFromDecimal(view);
         }
-        else{
+        else{                                           //2131230785
             convertFromHex(view);
         }
-     /**
-        switch (curFocus){
-            case 0:
-                convertFromBinary(view);
-            case 1:
-                convertFromDecimal(view);
-            case 2:
-                convertFromHex(view);
-            default:
-                clearMessage(view);
-        }
-      **/
     }
 
     public void convertFromBinary(View view){
@@ -111,14 +92,7 @@ public class MainActivity extends ActionBarActivity {
         decEditText.setText(decString);
         EditText hexEditText = (EditText) findViewById(R.id.hex_message);
         hexEditText.setText(hexString);
-        /**
-        EditText et1 = (EditText) findViewById(R.id.hex_message);
-        et1.setText("bin");
-        EditText et2 = (EditText) findViewById(R.id.dec_message);
-        et2.setText("bin");
-        EditText et3 = (EditText) findViewById(R.id.bin_message);
-        et3.setText("bin");
-         **/
+
     }
 
     public void convertFromDecimal(View view){
@@ -145,14 +119,7 @@ public class MainActivity extends ActionBarActivity {
         binEditText.setText(binString);
         EditText decEditText = (EditText) findViewById(R.id.dec_message);
         decEditText.setText(decString);
-        /**
-        EditText et1 = (EditText) findViewById(R.id.hex_message);
-        et1.setText("hex");
-        EditText et2 = (EditText) findViewById(R.id.dec_message);
-        et2.setText("hex");
-        EditText et3 = (EditText) findViewById(R.id.bin_message);
-        et3.setText("hex");
-         **/
+
     }
 
     public void clearMessage(View view){
