@@ -11,7 +11,7 @@
         android:hint="Enter a decimal number" />
 
     <EditText android:id="@+id/bin_message"
-        android:inputType="text"
+        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter a binary number"  />
@@ -44,8 +44,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:visibility="gone" />
+<!--
 
-    <!--
     <android.inputmethodservice.HexKeyboardView
         android:id="@+id/hexkeyboardview"
         android:layout_width="fill_parent"

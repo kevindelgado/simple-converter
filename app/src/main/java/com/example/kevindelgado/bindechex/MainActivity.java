@@ -13,32 +13,19 @@ import android.view.View.OnFocusChangeListener;
 
 public class MainActivity extends ActionBarActivity {
     CustomKeyboard myHexKeyboard;
-    CustomKeyboard myBinKeyboard;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        myBinKeyboard = new CustomKeyboard(this, R.id.keyboardview, R.xml.binkbd );
         myHexKeyboard = new CustomKeyboard(this, R.id.keyboardview, R.xml.hexkbd );
-
-
         myHexKeyboard.registerEditText(R.id.hex_message);
-        myBinKeyboard.registerEditText(R.id.bin_message);
-
     }
     public void onBackPressed(){
          //NOTE Trap the back key: when CustomKeyboard is still visible hide it, only when it is invisible, finish activity
         if( myHexKeyboard.isCustomKeyboardVisible() ){
             myHexKeyboard.hideCustomKeyboard();
         }
-        //else if( myBinKeyboard.isCustomKeyboardVisible() ){
-        //    myBinKeyboard.hideCustomKeyboard();
-        //}
         else{
             this.finish();
         }
@@ -72,10 +59,10 @@ public class MainActivity extends ActionBarActivity {
 
         int currentFocusId = getWindow().getCurrentFocus().getId();
         if(currentFocusId == 2131230783){               //2131230783
-            convertFromBinary(view);
+            convertFromDecimal(view);
         }
         else if(currentFocusId == 2131230784){          //2131230784
-            convertFromDecimal(view);
+            convertFromBinary(view);
         }
         else{                                           //2131230785
             convertFromHex(view);
@@ -83,9 +70,15 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void convertFromBinary(View view){
+        long binary;
         EditText binEditText = (EditText) findViewById(R.id.bin_message);
         String binMessage = binEditText.getText().toString();
-        long binary = Long.parseLong(binMessage, 2);
+        try {
+            binary = Long.parseLong(binMessage, 2);
+        } catch (NumberFormatException e){
+            clearMessage(view);
+            return;
+        }
         String decString = Long.toString(binary);
         String hexString = Long.toHexString(binary);
         EditText decEditText = (EditText) findViewById(R.id.dec_message);
@@ -96,7 +89,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void convertFromDecimal(View view){
-
          EditText decEditText = (EditText) findViewById(R.id.dec_message);
          String decMessage = decEditText.getText().toString();
          long decimal = Long.parseLong(decMessage);
